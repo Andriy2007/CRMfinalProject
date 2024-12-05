@@ -2,7 +2,7 @@ import {
   IOrderListQuery,
   IOrderResponseList,
   IOrders,
-} from "../interfaces/student.interface";
+} from "../interfaces/orders.interface";
 
 export class OrderPresenter {
   public static toPublicResponseDto(orders: IOrders): IOrders {

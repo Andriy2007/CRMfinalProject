@@ -2,8 +2,8 @@ import { FilterQuery, SortOrder } from "mongoose";
 
 import { escapeRegex } from "../constants/regex.constant";
 import { UserListOrderByEnum } from "../enums/order.enum";
-import { IOrderListQuery, IOrders } from "../interfaces/student.interface";
-import { Order } from "../models/student.model";
+import { IOrderListQuery, IOrders } from "../interfaces/orders.interface";
+import { Order } from "../models/orders.model";
 
 class OrderRepository {
   public async getList(query: IOrderListQuery): Promise<[IOrders[], number]> {
@@ -100,10 +100,7 @@ class OrderRepository {
     return await Order.findById(orderId);
   }
 
-  public async updateById(
-    orderId: string,
-    dto: Partial<IOrders>,
-  ): Promise<IOrders> {
+  public async updateById(orderId: string, dto: Partial<IOrders>,): Promise<IOrders> {
     return await Order.findByIdAndUpdate(orderId, dto, {
       returnDocument: "after",
     });

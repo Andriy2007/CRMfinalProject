@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { orderController } from "../controllers/student.conroller";
+import { orderController } from "../controllers/orders.conroller";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { OrdersValidator } from "../validators/orders.validator";
 

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
-import { IOrders } from "../interfaces/student.interface";
-import { orderService } from "../services/students.service";
+import { IOrders } from "../interfaces/orders.interface";
+import { orderService } from "../services/orders.service";
 
 class OrderController {
   public async getList(req: Request, res: Response, next: NextFunction) {

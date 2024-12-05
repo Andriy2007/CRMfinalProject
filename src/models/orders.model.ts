@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import { OrderDocument } from "../interfaces/student.interface";
+import { OrderDocument } from "../interfaces/orders.interface";
 
 const orderSchema = new mongoose.Schema(
   {
@@ -11,18 +11,17 @@ const orderSchema = new mongoose.Schema(
     course: {
       type: String,
       enum: ["FS", "QACX", "JCX", "JSCX", "FE", "PCX"],
-      required: true,
     },
-    course_format: { type: String, enum: ["static", "online"], required: true },
+    course_format: { type: String, enum: ["static", "online"] },
     course_type: {
       type: String,
       enum: ["pro", "minimal", "premium", "incubator", "vip"],
-      required: true,
+
     },
     status: {
       type: String,
       enum: ["Inwork", "New", "Aggre", "Disaggre", "Dubbing"],
-      required: true,
+
     },
     phone: { type: String },
     sum: { type: String },

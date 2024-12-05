@@ -1,7 +1,8 @@
 import { ApiError } from "../errors/api-error";
-import { IOrderListQuery, IOrders } from "../interfaces/student.interface";
-import { OrderPresenter } from "../presenter/student.presenter";
-import { orderRepository } from "../repositories/student.repository";
+import { IOrderListQuery, IOrders } from "../interfaces/orders.interface";
+import { OrderPresenter } from "../presenter/orders.presenter";
+import { orderRepository } from "../repositories/orders.repository";
+
 
 
 
@@ -16,10 +17,7 @@ class OrderService {
   public async getById(orderId: string): Promise<IOrders> {
     return await this.findOrderOrThrow(orderId);
   }
-  public async updateById(
-    orderId: string,
-    dto: Partial<IOrders>,
-  ): Promise<IOrders> {
+  public async updateById(orderId: string, dto: Partial<IOrders>,): Promise<IOrders> {
     await this.findOrderOrThrow(orderId);
     return await orderRepository.updateById(orderId, dto);
   }
