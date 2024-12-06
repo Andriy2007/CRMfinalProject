@@ -7,9 +7,9 @@ import {commonMiddleware} from "../middlewares/common.middleware";
 
 const router = Router();
 
-router.get("/", authMiddleware.checkCredentials, isAdmin, userController.getList);
-router.get("/:userId", authMiddleware.checkCredentials,commonMiddleware.isUserIdValid, userController.getById);
-router.put("/:userId", authMiddleware.checkCredentials,commonMiddleware.isUserIdValid,userController.updateById);
-router.delete("/:userId",authMiddleware.checkCredentials,commonMiddleware.isUserIdValid, userController.deleteById);
+router.get("/", authMiddleware.checkAccessToken, isAdmin, userController.getList);
+router.get("/:userId", authMiddleware.checkAccessToken,commonMiddleware.isUserIdValid, userController.getById);
+router.put("/:userId", authMiddleware.checkAccessToken,commonMiddleware.isUserIdValid,userController.updateById);
+router.delete("/:userId",authMiddleware.checkAccessToken,commonMiddleware.isUserIdValid, userController.deleteById);
 
 export const userRouter = router;

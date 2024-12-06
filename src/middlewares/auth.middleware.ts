@@ -2,31 +2,11 @@ import { NextFunction, Request, Response } from "express";
 
 import {ApiError} from "../errors/api-error";
 import {tokenRepository} from "../repositories/token.repository";
-import {passwordService} from "../services/password.service";
 import {tokenService} from "../services/token.service";
 import {userService} from "../services/user.service";
 
 class AuthMiddleware {
-  public async checkCredentials(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { email, password } = req.body;
-      if (!email || !password) {
-        return res.status(400).send("Email або пароль не надані");
-      }
-      const user = await userService.getByEmail(email);
-      if (!user) {
-        return res.status(401).send("Неправильний email або пароль");
-      }
-      const isPasswordValid = await passwordService.comparePassword(password, user.password);
-      if (!isPasswordValid) {
-        return res.status(401).send("Неправильний email або пароль");
-      }
-      res.locals.user = user;
-      next();
-    } catch (e) {
-      next(e);
-    }
-  }
+
   public async checkAccessToken(req: Request, res: Response, next: NextFunction,) {
     try {
       const accessToken = req.get("Authorization");
