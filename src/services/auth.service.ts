@@ -27,11 +27,9 @@ class AuthService {
     });
     return { user, tokens };
   }
-  public async signIn(dto: {
-    email: string;
-    password: string;
-  }): Promise<IUser> {
+  public async signIn(dto: { email: string; password: string; }): Promise<{ user: IUser; tokens: ITokenResponse }>{
     const user = await userRepository.getByParams({ email: dto.email });
+
     if (!user) {
       throw new ApiError("Wrong email or password", 401);
     }
@@ -42,7 +40,17 @@ class AuthService {
     if (!isCompare) {
       throw new ApiError("Wrong email or password", 401);
     }
-    return user;
+    const tokens = tokenService.generatePair({
+      userId: user._id,
+      role: user.role,
+    });
+    await tokenRepository.create({
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      _userId: user._id,
+    });
+
+    return { user, tokens };
   }
 
   private async isEmailExist(email: string): Promise<void> {
