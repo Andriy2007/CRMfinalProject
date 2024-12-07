@@ -23,9 +23,6 @@ class UserService {
     await this.findUserOrThrow(userId);
     return await userRepository.deleteById(userId);
   }
-  public async getByEmail(email: string): Promise<IUser | null> {
-    return await userRepository.getByParams({ email });
-  }
   private async findUserOrThrow(userId: string): Promise<IUser> {
     const user = await userRepository.getById(userId);
     if (!user) {

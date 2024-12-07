@@ -6,7 +6,6 @@ import { OrdersValidator } from "../validators/orders.validator";
 import {authMiddleware} from "../middlewares/auth.middleware";
 
 
-
 const router = Router();
 
 router.get("/", authMiddleware.checkAccessToken,commonMiddleware.isQueryValid(OrdersValidator.listQuery), orderController.getList,);
