@@ -7,9 +7,13 @@ import { ApiError } from "./errors/api-error";
 import { authRouter } from "./routers/auth.router";
 import { orderRouter } from "./routers/orders.router";
 import { userRouter } from "./routers/user.router";
+import {groupRouter} from "./routers/group.router";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/orders", orderRouter);
+app.use("/groups", groupRouter);
 
 app.use(
   "*",

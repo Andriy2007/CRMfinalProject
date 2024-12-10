@@ -31,7 +31,7 @@ class OrderRepository {
     if (query.course) {
       filterObj.course = { $regex: query.course, $options: "i" };
     }
-    console.log("Filter object:", filterObj); // Додайте логування тут
+    console.log("Filter object:", filterObj);
     if (query.course_type) {
       filterObj.course_type = query.course_type;
     }

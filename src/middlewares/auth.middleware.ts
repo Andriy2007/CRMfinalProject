@@ -6,7 +6,6 @@ import {tokenService} from "../services/token.service";
 import {userService} from "../services/user.service";
 
 class AuthMiddleware {
-
   public async checkAccessToken(req: Request, res: Response, next: NextFunction,) {
     try {
       const accessToken = req.get("Authorization");

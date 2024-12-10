@@ -3,9 +3,6 @@ import { IOrderListQuery, IOrders } from "../interfaces/orders.interface";
 import { OrderPresenter } from "../presenter/orders.presenter";
 import { orderRepository } from "../repositories/orders.repository";
 
-
-
-
 class OrderService {
   public async getList(query: IOrderListQuery): Promise<any> {
     const [orders, total] = await orderRepository.getList(query);
