@@ -7,7 +7,6 @@ import { Order } from "../models/orders.model";
 
 class OrderRepository {
   public async getList(query: IOrderListQuery): Promise<[IOrders[], number]> {
-    console.log("Incoming query:", query);
     const filterObj: FilterQuery<IOrders> = {};
     if (query.searchByName) {
       filterObj.name = { $regex: query.searchByName, $options: "i" };
@@ -31,7 +30,6 @@ class OrderRepository {
     if (query.course) {
       filterObj.course = { $regex: query.course, $options: "i" };
     }
-    console.log("Filter object:", filterObj);
     if (query.course_type) {
       filterObj.course_type = query.course_type;
     }

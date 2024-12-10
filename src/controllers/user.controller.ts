@@ -26,7 +26,6 @@ class UserController {
     try {
       const userId = req.params.userId;
       const user = await userService.getById(userId);
-      console.log(req.params)
       res.json(user);
     } catch (e) {
       next(e);
