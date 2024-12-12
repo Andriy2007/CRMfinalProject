@@ -25,6 +25,7 @@ export class OrderPresenter {
       msg: orders.msg,
       utm: orders.utm,
       comment: orders.comment,
+      user_id: orders.user_id,
     };
   }
 

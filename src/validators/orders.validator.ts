@@ -32,7 +32,7 @@ export class OrdersValidator {
   private static comment = joi.string().min(0).max(15);
 
   public static listQuery = joi.object({
-    limit: joi.number().min(1).max(100).default(20),
+    limit: joi.number().min(1).max(1000).default(20),
     page: joi.number().min(1).default(1),
     searchByName: joi.string().optional(),
     searchBySurname: joi.string().optional(),

@@ -20,7 +20,7 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Inwork", "New", "Aggre", "Disaggre", "Dubbing"],
+      enum: ["In work", "New", "Aggre", "Disaggre", "Dubbing"],
 
     },
     phone: { type: String },
@@ -31,7 +31,12 @@ const orderSchema = new mongoose.Schema(
     manager: { type: String },
     msg: { type: String },
     utm: { type: String },
-    comment: { type: String },
+      comment: {
+          text: { type: String, required: true },
+          author: { type: String, required: true },
+          date: { type: String, required: true },
+      },
+      user_id: { type: String },
   },
   {
     timestamps: true,

@@ -21,6 +21,9 @@ class AuthMiddleware {
       if (!user || !user._id) {
         throw new ApiError("User not authenticated or missing _id", 401);
       }
+      if (user.isBanned) {
+        return res.status(403).json({ message: "Your account is banned. Contact support." });
+      }
       req.res.locals.jwtPayload = payload;
       res.locals.user = user;
       next();

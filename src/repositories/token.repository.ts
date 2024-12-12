@@ -11,6 +11,9 @@ class TokenRepository {
   public async findByParams(params: FilterQuery<IToken>): Promise<IToken> {
     return await Token.findOne(params);
   }
+  public async updateByUserId(userId: string, dto: Partial<IToken>): Promise<void> {
+    await Token.findOneAndUpdate({ userId }, dto, { upsert: true });
+  }
 }
 
 export const tokenRepository = new TokenRepository();

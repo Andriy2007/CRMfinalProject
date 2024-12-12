@@ -9,7 +9,6 @@ class GroupService {
     public async create(dto: Partial<IGroup>): Promise<IGroup> {
         return await groupRepository.create(dto);
     }
-
 }
 
 export const groupService = new GroupService();

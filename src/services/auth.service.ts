@@ -1,37 +1,78 @@
 import { ApiError } from "../errors/api-error";
 import { ITokenResponse } from "../interfaces/token.interface";
-import { IUser } from "../interfaces/user.interface";
+import {IUser, IUsers} from "../interfaces/user.interface";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
+import {UserPresenter} from "../presenter/user.presenter";
+import bcrypt from "bcrypt";
+import {RoleEnum} from "../enums/role.enum";
 
 class AuthService {
   public async signUp(
-    dto: Partial<IUser>,
+      dto: Partial<IUser>,
   ): Promise<{ user: IUser; tokens: ITokenResponse }> {
     await this.isEmailExist(dto.email);
-    const hashedPassword = await passwordService.hashPassword(dto.password);
+    const userRole = dto.role || RoleEnum.Manager;
     const user = await userRepository.create({
       ...dto,
-      password: hashedPassword,
+      role: userRole,
+      password: '',
     });
     const tokens = tokenService.generatePair({
-      userId: user._id,
+      userId: user._id.toString(),
       role: user.role,
     });
+    const activationToken = tokenService.generateActivationToken(user._id.toString());
     await tokenRepository.create({
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
-      _userId: user._id,
+      activationToken,
+      userId: user._id.toString(),
     });
+
     return { user, tokens };
   }
-  public async signIn(dto: { email: string; password: string; }): Promise<{ user: IUser; tokens: ITokenResponse }>{
-    const user = await userRepository.getByParams({ email: dto.email });
 
+  public async generateActivationLink(userId: string): Promise<string> {
+    const activationToken = tokenService.generateActivationToken(userId);
+    const activationUrl = `http://localhost:3000/set-password/${activationToken}`;
+    return activationUrl;
+  }
+
+  public async setPassword(token: string, newPassword: string): Promise<void> {
+    const decoded = tokenService.checkActivationToken(token);
+    if (!decoded || !decoded.userId) throw new ApiError("Invalid or expired token", 401);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await userRepository.updateById(decoded.userId, {
+      password: hashedPassword,
+      isVerified: true,
+    });
+  }
+
+  public async generateRecoveryLink(userId: string): Promise<string> {
+    const recoveryToken = tokenService.generateActivationToken(userId);
+    await tokenRepository.updateByUserId(userId, { recoveryToken });
+    return `http://localhost:3000/set-password/${recoveryToken}`;
+  }
+
+  public async setNewPassword(token: string, newPassword: string): Promise<void> {
+    const tokenData = await tokenRepository.findByParams({ recoveryToken: token });
+    if (!tokenData) throw new ApiError("Invalid or expired token", 401);
+    const user = await userRepository.getById(tokenData.userId);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await userRepository.updateById(user._id.toString(), { password: hashedPassword });
+    await tokenRepository.updateByUserId(user._id.toString(), { recoveryToken: null });
+  }
+
+  public async signIn(dto: { email: string; password: string; }): Promise<{ user: IUsers; tokens: ITokenResponse }>{
+    const user = await userRepository.getByParams({ email: dto.email });
     if (!user) {
       throw new ApiError("Wrong email or password", 401);
+    }
+    if (user.isBanned) {
+      throw new ApiError("Your account is banned. Contact support.", 403);
     }
     const isCompare = await passwordService.comparePassword(
       dto.password,
@@ -47,10 +88,11 @@ class AuthService {
     await tokenRepository.create({
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
-      _userId: user._id,
+      userId: user._id,
     });
 
-    return { user, tokens };
+    const publicUser = UserPresenter.toPublicResponseDto(user);
+    return { user: publicUser, tokens };
   }
 
   private async isEmailExist(email: string): Promise<void> {

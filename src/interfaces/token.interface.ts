@@ -1,3 +1,8 @@
+export interface IActivationToken {
+  activationToken: string;
+  userId: string;
+}
+
 export interface ITokenPair {
   accessToken: string;
   refreshToken: string;
@@ -5,7 +10,9 @@ export interface ITokenPair {
 
 export interface IToken extends ITokenPair {
   _id?: string;
-  _userId: string;
+  userId: string;
+  activationToken?: string;
+  recoveryToken?: string;
 }
 
 export interface ITokenResponse extends ITokenPair {

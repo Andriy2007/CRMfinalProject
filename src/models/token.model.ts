@@ -5,9 +5,11 @@ import { User } from "./user.model";
 
 const tokenSchema = new mongoose.Schema(
   {
-    accessToken: { type: String, required: true },
-    refreshToken: { type: String, required: true },
-    _userId: { type: Types.ObjectId, required: true, ref: User },
+    accessToken: { type: String, },
+    refreshToken: { type: String, },
+      activationToken: { type: String, required: false },
+    userId: { type: Types.ObjectId, required: true, ref: User },
+      recoveryToken: { type: String },
   },
   {
     timestamps: true,

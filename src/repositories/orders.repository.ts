@@ -103,12 +103,8 @@ class OrderRepository {
       returnDocument: "after",
     });
   }
-
   public async deleteById(orderId: string): Promise<void> {
     await Order.deleteOne({ _id: orderId });
-  }
-  public async getByParams(params: Partial<IOrders>): Promise<IOrders> {
-    return await Order.findOne(params);
   }
 }
 

@@ -6,7 +6,7 @@ export class UserValidator {
   private static userName = joi.string().min(3).max(50).trim().messages({});
   private static surName = joi.string().min(3).max(50).trim().messages({});
   private static phone = joi.string().regex(regexConstant.PHONE).trim();
-  private static email = joi.string().trim();
+  private static email = joi.string().regex(regexConstant.EMAIL).trim();
   private static password = joi.string().trim();
   private static role = joi.string();
 
@@ -15,8 +15,7 @@ export class UserValidator {
     name: this.userName,
     surname: this.surName,
     email: this.email.required(),
-    password: this.password.required(),
-    phone: this.phone,
+    password: this.password,
     role: this.role,
   });
 
@@ -31,6 +30,6 @@ export class UserValidator {
 
   public static login = joi.object({
     email: this.email.required(),
-    password: this.password.required(),
+    password: this.password,
   });
 }

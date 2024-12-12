@@ -25,7 +25,11 @@ export interface IOrders {
   manager: string;
   msg: string;
   utm: string;
-  comment: string;
+  comment?: {
+    text: string;
+    author: string;
+    date: string; }
+  user_id: string;
 }
 
 export interface IOrderListQuery {
