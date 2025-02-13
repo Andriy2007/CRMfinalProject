@@ -68,6 +68,12 @@ class OrderRepository {
     case UserListOrderByEnum.PHONE:
       sortObj.phone = query.order;
       break;
+      case UserListOrderByEnum.STATUS:
+        sortObj.status = query.order;
+        break;
+      case UserListOrderByEnum.MANAGER:
+        sortObj.manager = query.order;
+        break;
       case UserListOrderByEnum.SUM:
       sortObj.sum = query.order;
       break;

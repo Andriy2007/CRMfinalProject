@@ -44,6 +44,13 @@ class TokenService {
       throw new ApiError("Activation token is not valid", 401);
     }
   }
+  public checkRefreshToken(token: string): IJWTPayload {
+    try {
+      return jsonwebtoken.verify(token, config.JWT_REFRESH_SECRET) as IJWTPayload;
+    } catch (error) {
+      throw new ApiError("Refresh token is not valid", 401);
+    }
+  }
 }
 
 export const tokenService = new TokenService();

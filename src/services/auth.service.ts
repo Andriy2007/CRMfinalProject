@@ -101,6 +101,34 @@ class AuthService {
       throw new ApiError("email already exist", 409);
     }
   }
+  public async refreshToken(refreshToken: string): Promise<{ tokens: ITokenResponse; user: IUser }> {
+    const payload = tokenService.checkRefreshToken(refreshToken);
+    if (!payload) {
+      throw new ApiError("Invalid refresh token", 401);
+    }
+
+    const existingToken = await tokenRepository.findByParams({ refreshToken });
+    if (!existingToken) {
+      throw new ApiError("Invalid refresh token", 401);
+    }
+
+    const user = await userRepository.getById(payload.userId);
+    if (!user) {
+      throw new ApiError("User not found", 401);
+    }
+
+    const tokens = tokenService.generatePair({
+      userId: user._id.toString(),
+      role: user.role,
+    });
+
+    await tokenRepository.updateByUserId(user._id.toString(), {
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+    });
+
+    return { tokens, user };
+  }
 }
 
 export const authService = new AuthService();

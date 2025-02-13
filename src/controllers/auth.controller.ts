@@ -60,6 +60,18 @@ class AuthController {
       next(error);
     }
   }
+  public async refreshToken(req: Request, res: Response, next: NextFunction) {
+    try {
+      const {refreshToken} = req.body;
+      if (!refreshToken) {
+        return res.status(401).json({message: "Refresh token is required"});
+      }
+      const {tokens, user} = await authService.refreshToken(refreshToken);
+      res.json({tokens, user});
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export const authController = new AuthController();

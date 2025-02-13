@@ -12,6 +12,6 @@ router.post("/send-activation-link", authController.sendActivationLink);
 router.post("/send-recovery-link", authController.sendRecoveryLink);
 router.post("/set-password", authController.setPassword);
 router.post("/set-NewPassword", authController.setNewPassword);
-
+router.post("/refresh-token", authController.refreshToken);
 
 export const authRouter = router;

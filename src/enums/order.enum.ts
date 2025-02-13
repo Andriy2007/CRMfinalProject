@@ -1,5 +1,5 @@
 export enum OrderStatusEnum {
-  Inwork = "In work",
+  InWork = "InWork",
   New = "New",
   Aggre = "Aggre",
   Disaggre = "Disaggre",
@@ -39,6 +39,8 @@ export enum UserListOrderByEnum {
   COURSE_TYPE = "course_type",
   PHONE = "phone",
   SUM = "sum",
+  STATUS= "status",
+  MANAGER = "manager",
   ALREADYPAID = "alreadyPaid",
   GROUP = "group",
   CREATED_AT = "created_at",
