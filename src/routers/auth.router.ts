@@ -10,8 +10,8 @@ router.post("/sign-up", commonMiddleware.isBodyValid(UserValidator.create), auth
 router.post("/sign-in", commonMiddleware.isBodyValid(UserValidator.login), authController.signIn,);
 router.post("/send-activation-link", authController.sendActivationLink);
 router.post("/send-recovery-link", authController.sendRecoveryLink);
-router.post("/set-password", authController.setPassword);
-router.post("/set-NewPassword", authController.setNewPassword);
+router.post("/set-password",commonMiddleware.isBodyValid(UserValidator.setPassword), authController.setPassword);
+router.post("/set-NewPassword",commonMiddleware.isBodyValid(UserValidator.setPassword), authController.setNewPassword);
 router.post("/refresh-token", authController.refreshToken);
 
 export const authRouter = router;

@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import {IUser} from "../interfaces/user.interface";
 import {userService} from "../services/user.service";
 import {User} from "../models/user.model";
+import {RoleEnum} from "../enums/role.enum";
 
 class UserController {
   public async getList(req: Request, res: Response, next: NextFunction) {
@@ -47,6 +48,17 @@ class UserController {
   public async banUser(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
+      const adminId = res.locals.user._id;
+      if (adminId.toString() === id) {
+        return res.status(400).json({ message: "You cannot ban yourself" });
+      }
+      const userToBan = await User.findById(id);
+      if (!userToBan) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      if (userToBan.role === RoleEnum.ADMIN) {
+        return res.status(403).json({ message: "You cannot ban an admin" });
+      }
       await User.findByIdAndUpdate(id, { isBanned: true });
       res.status(200).json({ message: "User banned successfully" });
     } catch (error) {

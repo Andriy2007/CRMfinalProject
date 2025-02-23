@@ -53,8 +53,8 @@ class AuthController {
   }
   public async setNewPassword(req: Request, res: Response, next: NextFunction) {
     try {
-      const { token, newPassword } = req.body;
-      await authService.setNewPassword(token, newPassword);
+      const { token, password } = req.body;
+      await authService.setNewPassword(token, password);
       res.json({ message: "Password updated successfully" });
     } catch (error) {
       next(error);
