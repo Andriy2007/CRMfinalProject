@@ -40,11 +40,14 @@ export interface IOrderListQuery {
   course?: string;
   course_type?: string;
   status?: string;
+  group?: string;
   searchByName?: string;
   searchBySurname?: string;
   searchByEmail?: string;
   searchByPhone?: string;
   searchByAge?: string;
+  startDate?: string;
+  endDate?: string;
   order?: OrderEnum;
   orderBy?: UserListOrderByEnum;
 }

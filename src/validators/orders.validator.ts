@@ -55,6 +55,15 @@ export class OrdersValidator {
       .string()
       .optional()
       .valid(...Object.values(OrderStatusEnum)),
+    group: joi
+        .string()
+        .optional(),
+    startDate: joi
+        .string()
+        .optional(),
+    endDate: joi
+        .string()
+        .optional(),
     order: joi
       .string()
       .valid(...Object.values(OrderEnum))

@@ -1,6 +1,6 @@
 import { ApiError } from "../errors/api-error";
 import { ITokenResponse } from "../interfaces/token.interface";
-import {IUser, IUsers} from "../interfaces/user.interface";
+import {IPublicUser, IUser, IUsers} from "../interfaces/user.interface";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { passwordService } from "./password.service";
@@ -101,7 +101,7 @@ class AuthService {
       throw new ApiError("email already exist", 409);
     }
   }
-  public async refreshToken(refreshToken: string): Promise<{ tokens: ITokenResponse; user: IUser }> {
+  public async refreshToken(refreshToken: string): Promise<{ tokens: ITokenResponse; user: IPublicUser  }> {
     const payload = tokenService.checkRefreshToken(refreshToken);
     if (!payload) {
       throw new ApiError("Invalid refresh token", 401);
@@ -126,8 +126,8 @@ class AuthService {
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
     });
-
-    return { tokens, user };
+    const publicUser = UserPresenter.toPublicResponseDto(user);
+    return { tokens, user: publicUser };
   }
 }
 

@@ -34,8 +34,26 @@ class OrderRepository {
       filterObj.course_type = query.course_type;
     }
     if (query.status) {
-      filterObj.status = query.status;
+      if (query.status === "New") {
+        filterObj.$or = [{ status: "New" }, { status: null }];
+      } else {
+        filterObj.status = query.status;
+      }
     }
+    if (query.group) {
+      filterObj.group = query.group;
+    }
+    if (query.startDate && query.endDate) {
+      filterObj.created_at = {
+        $gte: query.startDate,
+        $lte: query.endDate,
+      };
+    } else if (query.startDate) {
+      filterObj.created_at = { $gte: query.startDate };
+    } else if (query.endDate) {
+      filterObj.created_at = { $lte: query.endDate };
+    }
+
     if (query.search) {
       filterObj.name = { $regex: query.search, $options: "i" };
     }

@@ -21,6 +21,7 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["InWork", "New", "Aggre", "Disaggre", "Dubbing"],
+        default: "New",
 
     },
     phone: { type: String },
