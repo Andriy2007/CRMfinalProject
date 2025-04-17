@@ -9,20 +9,25 @@ class UserService {
     const [orders, total] = await userRepository.getList(query);
     return UserPresenter.toResponseList(orders, total, query);
   }
+
   public async create(dto: Partial<IUser>): Promise<IUser> {
     return await userRepository.create(dto);
   }
+
   public async getById(userId: string): Promise<IUser> {
     return await this.findUserOrThrow(userId);
   }
+
   public async updateById(userId: string, dto: Partial<IUser>): Promise<IUser> {
     await this.findUserOrThrow(userId);
     return await userRepository.updateById(userId, dto);
   }
+
   public async deleteById(userId: string): Promise<void> {
     await this.findUserOrThrow(userId);
     return await userRepository.deleteById(userId);
   }
+
   private async findUserOrThrow(userId: string): Promise<IUser> {
     const user = await userRepository.getById(userId);
     if (!user) {

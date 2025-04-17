@@ -1,12 +1,11 @@
 import {Router} from "express";
-import {groupController} from "../controllers/group.controller";
 
+import {groupController} from "../controllers/group.controller";
+import {authMiddleware} from "../middlewares/auth.middleware";
 
 
 const router = Router();
-
-router.get("/",groupController.getList);
-router.post("/",groupController.create);
-
+router.get("/",authMiddleware.checkAccessToken,groupController.getList);
+router.post("/",authMiddleware.checkAccessToken,groupController.create);
 
 export const groupRouter = router;

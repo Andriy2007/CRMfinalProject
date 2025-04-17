@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 import { UserDocument } from "../interfaces/user.interface";
 
+
 const userSchema = new mongoose.Schema(
   {
     name: { type: String },

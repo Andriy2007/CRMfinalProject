@@ -1,11 +1,5 @@
-import {
-  OrderCourseEnum,
-  OrderEnum,
-  OrderFormatCourseEnum,
-  OrderStatusEnum,
-  OrderTypeCourseEnum,
-  UserListOrderByEnum,
-} from "../enums/order.enum";
+import {OrderCourseEnum, OrderEnum, OrderFormatCourseEnum, OrderStatusEnum, OrderTypeCourseEnum, UserListOrderByEnum,} from "../enums/order.enum";
+
 
 export interface IOrders {
   _id: string;
@@ -55,6 +49,7 @@ export interface IOrderListQuery {
 export interface IOrderResponseList extends IOrderListQuery {
   data: IOrders[];
   total: number;
+
 }
 
 export interface OrderDocument extends IOrders, Document {}

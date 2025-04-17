@@ -1,8 +1,8 @@
 import {NextFunction, Request, Response} from "express";
 
-
 import {IGroup} from "../interfaces/group.interface";
 import {groupService} from "../services/group.service";
+
 
 class GroupController {
     public async getList(req: Request, res: Response, next: NextFunction) {
@@ -23,7 +23,6 @@ class GroupController {
             next(e);
         }
     }
-
 }
 
 export const groupController = new GroupController();

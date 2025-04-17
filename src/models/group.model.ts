@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-
 import {GroupDocument} from "../interfaces/group.interface";
+
 
 const groupSchema = new mongoose.Schema(
     {

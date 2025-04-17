@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 import { ApiError } from "../errors/api-error";
 import { ITokenResponse } from "../interfaces/token.interface";
 import {IPublicUser, IUser, IUsers} from "../interfaces/user.interface";
@@ -6,8 +8,8 @@ import { userRepository } from "../repositories/user.repository";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
 import {UserPresenter} from "../presenter/user.presenter";
-import bcrypt from "bcrypt";
 import {RoleEnum} from "../enums/role.enum";
+
 
 class AuthService {
   public async signUp(
@@ -31,7 +33,6 @@ class AuthService {
       activationToken,
       userId: user._id.toString(),
     });
-
     return { user, tokens };
   }
 
@@ -90,7 +91,6 @@ class AuthService {
       refreshToken: tokens.refreshToken,
       userId: user._id,
     });
-
     const publicUser = UserPresenter.toPublicResponseDto(user);
     return { user: publicUser, tokens };
   }
@@ -101,27 +101,25 @@ class AuthService {
       throw new ApiError("email already exist", 409);
     }
   }
+
   public async refreshToken(refreshToken: string): Promise<{ tokens: ITokenResponse; user: IPublicUser  }> {
     const payload = tokenService.checkRefreshToken(refreshToken);
     if (!payload) {
       throw new ApiError("Invalid refresh token", 401);
     }
-
     const existingToken = await tokenRepository.findByParams({ refreshToken });
     if (!existingToken) {
       throw new ApiError("Invalid refresh token", 401);
     }
-
     const user = await userRepository.getById(payload.userId);
     if (!user) {
       throw new ApiError("User not found", 401);
     }
-
+    await tokenRepository.deleteByParams({ refreshToken });
     const tokens = tokenService.generatePair({
       userId: user._id.toString(),
       role: user.role,
     });
-
     await tokenRepository.updateByUserId(user._id.toString(), {
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,

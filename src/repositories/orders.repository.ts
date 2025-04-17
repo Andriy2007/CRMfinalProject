@@ -5,6 +5,7 @@ import { UserListOrderByEnum } from "../enums/order.enum";
 import { IOrderListQuery, IOrders } from "../interfaces/orders.interface";
 import { Order } from "../models/orders.model";
 
+
 class OrderRepository {
   public async getList(query: IOrderListQuery): Promise<[IOrders[], number]> {
     const filterObj: FilterQuery<IOrders> = {};
@@ -44,68 +45,78 @@ class OrderRepository {
       filterObj.group = query.group;
     }
     if (query.startDate && query.endDate) {
+      const start = `${query.startDate}T00:00:00.000Z`;
+      const end = `${query.endDate}T23:59:59.999Z`;
       filterObj.created_at = {
-        $gte: query.startDate,
-        $lte: query.endDate,
+        $gte: start,
+        $lte: end,
       };
     } else if (query.startDate) {
-      filterObj.created_at = { $gte: query.startDate };
+      filterObj.created_at = {
+        $gte: `${query.startDate}T00:00:00.000Z`,
+      };
     } else if (query.endDate) {
-      filterObj.created_at = { $lte: query.endDate };
+      filterObj.created_at = {
+        $lte: `${query.endDate}T23:59:59.999Z`,
+      };
     }
 
     if (query.search) {
       filterObj.name = { $regex: query.search, $options: "i" };
     }
     const sortObj: { [key: string]: SortOrder } = {};
+    if (query.orderBy) {
     switch (query.orderBy) {
     case UserListOrderByEnum.ID:
-      sortObj._id = query.order;
+      sortObj._id = query.order || 'asc';
       break;
     case UserListOrderByEnum.NAME:
-      sortObj.name = query.order;
+      sortObj.name = query.order || 'asc';
         break;
     case UserListOrderByEnum.AGE:
-      sortObj.age = query.order;
+      sortObj.age = query.order || 'asc';
         break;
     case UserListOrderByEnum.SURNAME:
-      sortObj.surname = query.order;
+      sortObj.surname = query.order || 'asc';
       break;
     case UserListOrderByEnum.EMAIL:
-      sortObj.email = query.order;
+      sortObj.email = query.order || 'asc';
       break;
     case UserListOrderByEnum.COURSE:
-      sortObj.course = query.order;
+      sortObj.course = query.order || 'asc';
         break;
     case UserListOrderByEnum.COURSE_FORMAT:
-      sortObj.course_format = query.order;
+      sortObj.course_format = query.order || 'asc';
       break;
     case UserListOrderByEnum.COURSE_TYPE:
-      sortObj.course_type = query.order;
+      sortObj.course_type = query.order || 'asc';
         break;
     case UserListOrderByEnum.PHONE:
-      sortObj.phone = query.order;
+      sortObj.phone = query.order || 'asc';
       break;
       case UserListOrderByEnum.STATUS:
-        sortObj.status = query.order;
+        sortObj.status = query.order || 'asc';
         break;
       case UserListOrderByEnum.MANAGER:
-        sortObj.manager = query.order;
+        sortObj.manager = query.order || 'asc';
         break;
       case UserListOrderByEnum.SUM:
-      sortObj.sum = query.order;
+      sortObj.sum = query.order || 'asc';
       break;
     case UserListOrderByEnum.ALREADYPAID:
-        sortObj.alreadypaid = query.order;
+        sortObj.alreadypaid = query.order || 'asc';
       break;
     case UserListOrderByEnum.CREATED_AT:
-      sortObj.created_at = query.order;
+      sortObj.created_at = query.order || 'asc';
       break;
     case UserListOrderByEnum.GROUP:
-      sortObj.group = query.order;
+      sortObj.group = query.order || 'asc';
         break;
-    default:
-      throw new Error("Invalid orderBy");
+      default:
+        throw new Error("Invalid orderBy");
+    }
+    } else {
+      sortObj._id = 'desc';
     }
     const skip = (query.page - 1) * query.limit;
     return await Promise.all([
@@ -126,9 +137,6 @@ class OrderRepository {
     return await Order.findByIdAndUpdate(orderId, dto, {
       returnDocument: "after",
     });
-  }
-  public async deleteById(orderId: string): Promise<void> {
-    await Order.deleteOne({ _id: orderId });
   }
 }
 

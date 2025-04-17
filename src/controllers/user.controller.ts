@@ -5,6 +5,7 @@ import {userService} from "../services/user.service";
 import {User} from "../models/user.model";
 import {RoleEnum} from "../enums/role.enum";
 
+
 class UserController {
   public async getList(req: Request, res: Response, next: NextFunction) {
     try {
@@ -15,6 +16,7 @@ class UserController {
       next(e);
     }
   }
+
   public async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.params.userId;
@@ -24,6 +26,7 @@ class UserController {
       next(e);
     }
   }
+
   public async updateById(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.params.userId;
@@ -75,7 +78,6 @@ class UserController {
       res.status(500).json({ message: "Failed to unban user" });
     }
   };
-
 }
 
 export const userController = new UserController();

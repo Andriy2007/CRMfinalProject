@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 import { OrderDocument } from "../interfaces/orders.interface";
 
+
 const orderSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },

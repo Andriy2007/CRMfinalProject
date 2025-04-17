@@ -9,6 +9,7 @@ import { orderRouter } from "./routers/orders.router";
 import { userRouter } from "./routers/user.router";
 import {groupRouter} from "./routers/group.router";
 
+
 const app = express();
 app.use(cors({
   origin: 'http://localhost:3000',

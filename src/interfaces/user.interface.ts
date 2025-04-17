@@ -1,5 +1,6 @@
 import { RoleEnum } from "../enums/role.enum";
 
+
 export interface IUser {
   _id: string;
   name: string;
@@ -50,6 +51,7 @@ export interface IUserListQuery {
   limit?: number;
   page?: number;
 }
+
 export interface IUserResponseList extends IUserListQuery {
   data: IUsers[];
   total: number;

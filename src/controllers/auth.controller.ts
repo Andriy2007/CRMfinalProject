@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { IUser } from "../interfaces/user.interface";
 import { authService } from "../services/auth.service";
 
+
 class AuthController {
   public async signUp(req: Request, res: Response, next: NextFunction) {
     try {
@@ -33,33 +34,37 @@ class AuthController {
       next(e);
     }
   }
+
   public async setPassword(req: Request, res: Response, next: NextFunction) {
     try {
       const { token, password } = req.body;
       await authService.setPassword(token, password);
       res.status(200).json({ message: "Password set successfully" });
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      next(e);
     }
   }
+
   public async sendRecoveryLink(req: Request, res: Response, next: NextFunction) {
     try {
       const { userId } = req.body;
       const recoveryLink = await authService.generateRecoveryLink(userId);
       res.status(200).json({ recoveryLink });
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      next(e);
     }
   }
+
   public async setNewPassword(req: Request, res: Response, next: NextFunction) {
     try {
       const { token, password } = req.body;
       await authService.setNewPassword(token, password);
       res.json({ message: "Password updated successfully" });
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      next(e);
     }
   }
+
   public async refreshToken(req: Request, res: Response, next: NextFunction) {
     try {
       const {refreshToken} = req.body;
@@ -68,8 +73,8 @@ class AuthController {
       }
       const {tokens, user} = await authService.refreshToken(refreshToken);
       res.json({tokens, user});
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      next(e);
     }
   }
 }

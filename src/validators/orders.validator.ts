@@ -1,14 +1,8 @@
 import joi from "joi";
 
 import { regexConstant } from "../constants/regex.constant";
-import {
-  OrderCourseEnum,
-  OrderEnum,
-  OrderFormatCourseEnum,
-  OrderStatusEnum,
-  OrderTypeCourseEnum,
-  UserListOrderByEnum,
-} from "../enums/order.enum";
+import {OrderCourseEnum, OrderEnum, OrderFormatCourseEnum, OrderStatusEnum, OrderTypeCourseEnum, UserListOrderByEnum,} from "../enums/order.enum";
+
 
 export class OrdersValidator {
   private static name = joi.string().min(0).max(15);
@@ -16,9 +10,7 @@ export class OrdersValidator {
   private static email = joi.string().regex(regexConstant.EMAIL);
   private static age = joi.string().min(0).max(15);
   private static course = joi.valid(...Object.values(OrderCourseEnum));
-  private static course_format = joi.valid(
-    ...Object.values(OrderFormatCourseEnum),
-  );
+  private static course_format = joi.valid(...Object.values(OrderFormatCourseEnum),);
   private static course_type = joi.valid(...Object.values(OrderTypeCourseEnum));
   private static status = joi.valid(...Object.values(OrderStatusEnum));
   private static phone = joi.string().min(0).max(15);

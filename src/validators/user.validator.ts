@@ -13,8 +13,8 @@ export class UserValidator {
   public static listQuery = joi.object({
     limit: joi.number().min(1).max(1000).default(4),
     page: joi.number().min(1).default(1),
-
   });
+
   public static setPassword = joi.object({
     token: joi.string().required(),
     password: this.password.required(),

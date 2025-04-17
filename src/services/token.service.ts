@@ -37,6 +37,7 @@ class TokenService {
         { expiresIn: '30m' }
     );
   }
+
   public checkActivationToken(token: string): { userId: string } {
     try {
       return jsonwebtoken.verify(token, config.JWT_ACTIVATION_SECRET) as { userId: string };
@@ -44,6 +45,7 @@ class TokenService {
       throw new ApiError("Activation token is not valid", 401);
     }
   }
+
   public checkRefreshToken(token: string): IJWTPayload {
     try {
       return jsonwebtoken.verify(token, config.JWT_REFRESH_SECRET) as IJWTPayload;

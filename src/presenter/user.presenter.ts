@@ -1,9 +1,5 @@
-import {
-  IPublicUser,
-  IUser,
-  IUserListQuery, IUserResponse,
-  IUserResponseList,
-} from "../interfaces/user.interface";
+import {IPublicUser, IUser, IUserListQuery, IUserResponse, IUserResponseList} from "../interfaces/user.interface";
+
 
 export class UserPresenter {
   public static toPublicResponseDto(user: IUser): IUserResponse  {

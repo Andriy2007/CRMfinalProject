@@ -4,6 +4,7 @@ import { isObjectIdOrHexString } from "mongoose";
 
 import { ApiError } from "../errors/api-error";
 
+
 class CommonMiddleware {
   public isUserIdValid(req: Request, res: Response, next: NextFunction) {
     try {
@@ -16,6 +17,7 @@ class CommonMiddleware {
       next(e);
     }
   }
+
   public isOrderIdValid(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.orderId;
@@ -27,6 +29,7 @@ class CommonMiddleware {
       next(e);
     }
   }
+
   public isQueryValid(validator: ObjectSchema) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
@@ -37,6 +40,7 @@ class CommonMiddleware {
       }
     };
   }
+
   public isBodyValid(validator: ObjectSchema) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
